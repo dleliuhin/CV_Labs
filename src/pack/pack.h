@@ -12,6 +12,8 @@
 #include "defs.h"
 
 #include "ZcmService.hpp"
+#include "ZcmCameraBaslerFrame.hpp"
+#include "ZcmCameraBaslerJpegFrame.hpp"
 
 //=======================================================================================
 /*! \class Data
@@ -53,16 +55,18 @@ private:
 };
 //=======================================================================================
 
+using JFrame = ZcmCameraBaslerJpegFrame;
 
 //=======================================================================================
 /*! \struct Pack
  * \param data ZCM data entry.
  */
-struct Pack
+class Pack
 {
-    Data data;
+public:
 
-    // ... Add new data entry if you need fusion.
+    //! Raw data from camera.
+    JFrame frame;
 
     //-----------------------------------------------------------------------------------
 

@@ -65,9 +65,11 @@ public:
     //-----------------------------------------------------------------------------------
 
     /*! \struct Receive
-     * \param str     Struct name.
-     * \param target  Inter Process Communications.
-     * \param channel ZCM data from channel.
+     * \param str          Struct name.
+     * \param target       Inter Process Communications.
+     * \param channel      ZCM data from channel.
+     * \param frame_width  Raw data image width.
+     * \param frame_height Raw data image height.
      */
     struct Receive
     {
@@ -76,6 +78,9 @@ public:
         std::string target { "ipc" };
 
         Channel channel;
+
+        uint16_t frame_width  {0};
+        uint16_t frame_height {0};
 
     } receive;
 

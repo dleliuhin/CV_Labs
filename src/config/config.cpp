@@ -25,9 +25,11 @@ Config::Config()
     {
         _schema.subgroup( receive.str );
 
-        _schema.add( "target", &receive.target );
-        _schema.add( "prefix", &receive.channel.prefix );
-        _schema.add( "name",   &receive.channel.name );
+        _schema.add( "target",       &receive.target );
+        _schema.add( "prefix",       &receive.channel.prefix );
+        _schema.add( "name",         &receive.channel.name );
+        _schema.add( "frame_width",  &receive.frame_width );
+        _schema.add( "frame_height", &receive.frame_height );
 
         _schema.end_subgroup();
     }

@@ -12,7 +12,6 @@
 
 #include "subscribe.h"
 #include "config.h"
-#include "core.h"
 #include "publish.h"
 #ifdef GUI
 #include "view.h"
@@ -57,11 +56,6 @@ int main( int argc, char **argv )
 
     Subscribe subscriber( config );
     Publish publisher( config );
-    Core core( config );
-
-    subscriber.received.link( &core, &Core::run );
-
-    core.processed.link( &publisher, &Publish::send );
 
     //-----------------------------------------------------------------------------------
 
@@ -72,7 +66,7 @@ int main( int argc, char **argv )
     thread.invoke( [&]
     {
         View viewer( nargs.app_name() );
-        core.plot_data.link( &viewer, &View::plot );
+        subscriber.received.link( &viewer, &View::plot );
         viewer.run();
     } );
 #endif

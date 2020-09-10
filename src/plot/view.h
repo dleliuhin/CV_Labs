@@ -12,11 +12,12 @@
 #pragma once
 
 #include "config.h"
+#include "pack.h"
 
 #include "vapplication.h"
 #include "vsignal.h"
 
-#include <pcl/visualization/pcl_visualizer.h>
+#include <pcl/visualization/image_viewer.h>
 
 #include <string>
 
@@ -33,7 +34,7 @@ public:
      * \param[in] name Plot widget title.
      * \details Initialize _plot PCL visualizer basic options.
      */
-    View( const std::string& name = {} );
+    View( const std::string& name = {}, const Config& conf = {} );
 
     /*! \brief default destructor.
      * \details Close plot widget and stops the application.
@@ -52,14 +53,17 @@ public:
     /*! \fn void plot();
      * \brief Draw some 2D/3D data.
      */
-    void plot();
+    void plot( const Pack& data );
 
     //-----------------------------------------------------------------------------------
 
 private:
 
-    //! \brief Data visualization widget reference.
-    pcl::visualization::PCLVisualizer _plot;
+    Config _conf;
+
+    //! \brief Image visualization widget.
+    pcl::visualization::ImageViewer _image;
+    pcl::PCLImagePtr _pimg;
 
 };
 //=======================================================================================

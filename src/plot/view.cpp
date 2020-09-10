@@ -15,20 +15,19 @@ using namespace pcl::visualization;
 
 //=======================================================================================
 
-static constexpr int8_t timeout = 100;
+static constexpr uint16_t timeout = 100;
 
 //=======================================================================================
-View::View( const std::string& name )
+View::View( const std::string& name, const Config& conf )
+    : _conf ( conf )
 {
-    _plot.setWindowName( name );
-    _plot.setSize( 1600, 900 );
-    _plot.addCoordinateSystem( 1.0, "cloud", 0 );
-    _plot.setBackgroundColor( 0., 0., 0., 0 );
+    _image.setWindowTitle( name );
+    _image.setSize( 1600, 900 );
 }
 //=======================================================================================
 View::~View()
 {
-    _plot.close();
+    _image.close();
     vapplication::stop();
 }
 //=======================================================================================
@@ -37,17 +36,23 @@ View::~View()
 //=======================================================================================
 void View::run()
 {
-    while( !_plot.wasStopped() )
+    while( !_image.wasStopped() )
     {
-        _plot.spinOnce( timeout );
+
     }
 }
 //=======================================================================================
 
 
 //=======================================================================================
-void View::plot()
+void View::plot( const Pack& data )
 {
     vdeb << "Plot data";
+
+    _image.showRGBImage( data.frame.jpeg.data(),
+                         _conf.receive.frame_width,
+                         _conf.receive.frame_height );
+
+    _image.spinOnce( timeout );
 }
 //=======================================================================================
