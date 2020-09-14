@@ -9,7 +9,6 @@
 
 #include "subscribe_test.h"
 #include "subscribe.h"
-#include "publish.h"
 #include "config.h"
 
 //=======================================================================================
@@ -30,13 +29,8 @@ TEST( SubscribeTest, test_receive )
 {
     Config config;
     auto channel = "TestChannel";
-    config.send.channel.full = channel;
     config.receive.channel.full = channel;
 
     Subscribe sub( config );
-
-    Publish pub( config );
-    ZcmService msg;
-    pub.send( 0, msg );
 }
 //=======================================================================================

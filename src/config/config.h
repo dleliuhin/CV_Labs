@@ -53,6 +53,7 @@ public:
     /*! \struct Main
      * \param str Struct name.
      * \param debug Flag if need trace service info to log file.
+     * \param rotate Value if need rotate image in degrees.
      */
     struct Main
     {
@@ -60,14 +61,16 @@ public:
 
         bool debug { false };
 
+        int16_t rotate {0};
+
     } main;
 
     //-----------------------------------------------------------------------------------
 
     /*! \struct Receive
-     * \param str     Struct name.
-     * \param target  Inter Process Communications.
-     * \param channel ZCM data from channel.
+     * \param str          Struct name.
+     * \param target       Inter Process Communications.
+     * \param channel      ZCM data from channel.
      */
     struct Receive
     {
@@ -78,23 +81,6 @@ public:
         Channel channel;
 
     } receive;
-
-    //-----------------------------------------------------------------------------------
-
-    /*! \struct Send
-     * \param str     Struct name.
-     * \param target  Inter Process Communications.
-     * \param channel ZCM data to channel.
-     */
-    struct Send
-    {
-        const std::string str { "send" };
-
-        std::string target { "ipc" };
-
-        Channel channel;
-
-    } send;
 
     //-----------------------------------------------------------------------------------
 

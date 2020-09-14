@@ -37,6 +37,13 @@ const int64_t & Data::timestamp() const
 //=======================================================================================
 void Pack::clear()
 {
-    data.clear();
+    frame.info.serial_number.clear();
+    frame.info.user_defined_name.clear();
+    frame.synchronized = 0;
+    frame.timestamp_ns = 0;
+    frame.jpeg_size = 0;
+    frame.jpeg.clear();
+    frame.service.u_timestamp = 0;
+    frame.service.processing_time = 0;
 }
 //=======================================================================================
