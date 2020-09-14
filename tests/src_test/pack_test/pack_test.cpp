@@ -19,7 +19,7 @@ TEST( PackTest, test_clear )
     Pack pack;
     pack.clear();
 
-    ASSERT_EQ( 0, pack.data.timestamp() );
+    ASSERT_EQ( 0, pack.frame.service.u_timestamp );
 }
 //=======================================================================================
 /*! \test TEST( PackTest, test_operator_eq )

@@ -65,9 +65,8 @@ int main( int argc, char **argv )
     vthread thread;
     thread.invoke( [&]
     {
-        View viewer( nargs.app_name() );
+        View viewer( nargs.app_name(), config );
         subscriber.received.link( &viewer, &View::plot );
-        viewer.run();
     } );
 #endif
 

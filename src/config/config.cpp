@@ -17,7 +17,8 @@ Config::Config()
     {
         _schema.subgroup( main.str );
 
-        _schema.add( "debug", &main.debug );
+        _schema.add( "debug",  &main.debug  );
+        _schema.add( "rotate", &main.rotate );
 
         _schema.end_subgroup();
     }
@@ -28,8 +29,6 @@ Config::Config()
         _schema.add( "target",       &receive.target );
         _schema.add( "prefix",       &receive.channel.prefix );
         _schema.add( "name",         &receive.channel.name );
-        _schema.add( "frame_width",  &receive.frame_width );
-        _schema.add( "frame_height", &receive.frame_height );
 
         _schema.end_subgroup();
     }

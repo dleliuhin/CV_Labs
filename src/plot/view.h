@@ -17,7 +17,7 @@
 #include "vapplication.h"
 #include "vsignal.h"
 
-#include <pcl/visualization/image_viewer.h>
+#include <opencv2/opencv.hpp>
 
 #include <string>
 
@@ -32,14 +32,13 @@ public:
 
     /*!
      * \param[in] name Plot widget title.
+     * \param[in] conf Configuration parameters.
      * \details Initialize _plot PCL visualizer basic options.
      */
     View( const std::string& name = {}, const Config& conf = {} );
 
-    /*! \brief default destructor.
-     * \details Close plot widget and stops the application.
-     */
-    ~View();
+    //! Default destructor.
+    ~View() = default;
 
     //-----------------------------------------------------------------------------------
 
@@ -59,11 +58,11 @@ public:
 
 private:
 
-    Config _conf;
+    //! Widget name.
+    std::string _name;
 
-    //! \brief Image visualization widget.
-    pcl::visualization::ImageViewer _image;
-    pcl::PCLImagePtr _pimg;
+    //! OpenCV RotateFlags code.
+    int8_t _rotate_code { - 1 };
 
 };
 //=======================================================================================

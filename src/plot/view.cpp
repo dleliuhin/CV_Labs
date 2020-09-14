@@ -11,35 +11,22 @@
 
 #include "vlog.h"
 
-using namespace pcl::visualization;
-
-//=======================================================================================
-
-static constexpr uint16_t timeout = 100;
-
 //=======================================================================================
 View::View( const std::string& name, const Config& conf )
-    : _conf ( conf )
 {
-    _image.setWindowTitle( name );
-    _image.setSize( 1600, 900 );
-}
-//=======================================================================================
-View::~View()
-{
-    _image.close();
-    vapplication::stop();
-}
-//=======================================================================================
+    cv::moveWindow( name, 0, 0 );
 
+    if ( conf.main.rotate == 0 )
+        _rotate_code = - 1;
 
-//=======================================================================================
-void View::run()
-{
-    while( !_image.wasStopped() )
-    {
+    else if ( conf.main.rotate == 90 )
+        _rotate_code = cv::ROTATE_90_CLOCKWISE;
 
-    }
+    else if ( conf.main.rotate == - 90 )
+        _rotate_code = cv::ROTATE_90_COUNTERCLOCKWISE;
+
+    else if ( conf.main.rotate == 180 )
+        _rotate_code = cv::ROTATE_180;
 }
 //=======================================================================================
 
@@ -47,12 +34,28 @@ void View::run()
 //=======================================================================================
 void View::plot( const Pack& data )
 {
-    vdeb << "Plot data";
+    if ( data.frame.jpeg.empty() )
+        return;
 
-    _image.showRGBImage( data.frame.jpeg.data(),
-                         _conf.receive.frame_width,
-                         _conf.receive.frame_height );
+    std::vector<char> buf;
+    buf.assign( data.frame.jpeg.data(),
+                data.frame.jpeg.data() + data.frame.jpeg.size() );
 
-    _image.spinOnce( timeout );
+    auto img = cv::imdecode( buf, cv::IMREAD_COLOR );
+
+    cv::resize( img, img, { 400, 400 } );
+
+    if ( _rotate_code != - 1 )
+        cv::rotate( img, img, _rotate_code );
+
+    cv::imshow( _name, img );
+
+    auto key = cv::waitKey(10);
+
+    if ( key == 27 )
+        vapplication::stop();
+
+    else if ( key == 'p' )
+        cv::waitKey();
 }
 //=======================================================================================
