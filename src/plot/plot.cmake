@@ -1,20 +1,6 @@
 #========================================================================================
 
-find_package( PCL REQUIRED )
-
-if( PCL_FOUND )
-
-    include_directories( ${PCL_INCLUDE_DIRS} )
-
-    add_definitions( ${PCL_DEFINITIONS} )
-
-    link_directories( ${PCL_LIBRARY_DIRS} )
-
-endif()
-
-find_package( VTK REQUIRED )
-
-include( ${VTK_USE_FILE} )
+find_package( OpenCV REQUIRED )
 
 #========================================================================================
 

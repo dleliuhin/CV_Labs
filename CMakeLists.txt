@@ -51,10 +51,13 @@ add_executable( ${PROJECT_NAME}
     ${SRC}
     ${EXTERNAL} )
 
+if( GUI AND OpenCV_FOUND  )
+    target_include_directories( ${PROJECT_NAME} PRIVATE ${OpenCV_INCLUDE_DIRS} )
+endif()
+
 target_link_libraries( ${PROJECT_NAME}
-    ${VTK_LIBRARIES}
-    ${PCL_LIBRARIES}
     ${V_LIBRARIES}
+    ${OpenCV_LIBS}
     -lstdc++fs
     -ldl )
 

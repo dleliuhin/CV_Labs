@@ -18,10 +18,10 @@ Subscribe::Subscribe( const Config& conf )
 {
     _pack.clear();
 
-    _zcm.subscribe<ZcmService>( conf.receive.channel.full,
-                                [ this ]( const ZcmService& msg )
+    _zcm.subscribe<JFrame>( conf.receive.channel.full,
+                            [ this ]( const JFrame& msg )
     {
-        _pack.data = msg;
+        _pack.frame = msg;
 
         received( _pack );
     } );

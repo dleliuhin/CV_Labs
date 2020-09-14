@@ -19,20 +19,15 @@
  */
 void check_default_settings( const Config& conf )
 {
-    ASSERT_EQ( false, conf.main.debug );
-    ASSERT_EQ( "main", conf.main.str );
+    ASSERT_EQ( "main", conf.main.str    );
+    ASSERT_EQ( false,  conf.main.debug  );
+    ASSERT_EQ( 0,      conf.main.rotate );
 
     ASSERT_EQ( "ipc",     conf.receive.target );
     ASSERT_EQ( "",        conf.receive.channel.prefix );
     ASSERT_EQ( "",        conf.receive.channel.name );
     ASSERT_EQ( "",        conf.receive.channel.full );
     ASSERT_EQ( "receive", conf.receive.str );
-
-    ASSERT_EQ( "ipc",  conf.send.target );
-    ASSERT_EQ( "",     conf.send.channel.prefix );
-    ASSERT_EQ( "",     conf.send.channel.name );
-    ASSERT_EQ( "",     conf.send.channel.full );
-    ASSERT_EQ( "send", conf.send.str );
 
     ASSERT_EQ( true,              conf.logs.need_trace );
     ASSERT_EQ( true,              conf.logs.need_shared );
@@ -76,14 +71,11 @@ TEST( ConfigTest, test_by_default )
     auto settings = Config::by_default();
 
     ASSERT_EQ( "false", settings.subgroup( Config().main.str ).get( "debug" ) );
+    ASSERT_EQ( 0, std::stoi( settings.subgroup( Config().main.str ).get( "rotate" ) ) );
 
     ASSERT_EQ( "ipc", settings.subgroup( Config().receive.str ).get( "target" ) );
     ASSERT_EQ( "",    settings.subgroup( Config().receive.str ).get( "prefix" ) );
     ASSERT_EQ( "",    settings.subgroup( Config().receive.str ).get( "name" ) );
-
-    ASSERT_EQ( "ipc", settings.subgroup( Config().send.str ).get( "target" ) );
-    ASSERT_EQ( "",    settings.subgroup( Config().send.str ).get( "prefix" ) );
-    ASSERT_EQ( "",    settings.subgroup( Config().send.str ).get( "name" ) );
 
     ASSERT_EQ( "true",    settings.subgroup( Config().logs.str ).get( "need_trace" ) );
     ASSERT_EQ( "true",    settings.subgroup( Config().logs.str ).get( "need_shared" ) );
