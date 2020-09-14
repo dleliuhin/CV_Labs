@@ -12,7 +12,6 @@
 
 #include "subscribe.h"
 #include "config.h"
-#include "publish.h"
 #ifdef GUI
 #include "view.h"
 #endif
@@ -55,7 +54,6 @@ int main( int argc, char **argv )
     // Link signals -> slots
 
     Subscribe subscriber( config );
-    Publish publisher( config );
 
     //-----------------------------------------------------------------------------------
 

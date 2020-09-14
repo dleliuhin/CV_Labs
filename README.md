@@ -7,7 +7,7 @@
 
 Service for ...
 
-**zcm_img_viewer** is the software designed for ... It is developed based on C++17 and provides easy-to-use API. With **zcm_img_viewer**, users can quickly connect to ..., receive ... data and transmit decision via ....
+**zcm_img_viewer** is the software designed for viewing camera frames from ZCM.  With **zcm_img_viewer**, users can quickly connect to ZCM channel, receive image data and plow at widget.
 
 ---
 
@@ -29,7 +29,7 @@ Service for ...
 <a name="overview"></a>
 ## 1. Overview
 
-A service is a template for proper use by developers within a company. The number of services is constantly growing, however, their base remains unchanged. In the current repository, the author has tried to simplify many routine tasks when creating a new repository, including: automatic code documentation, static analysis, code coverage with Unit-tests, the use of generally accepted company submodules to interact with other services in the system.
+A service is a template for view image data from ZCM using OpenCV by developers within a company.
 
 ---
 
@@ -53,7 +53,7 @@ Third-party (for visualization):<br>
 - [Graphviz](https://graphviz.org)
 - [Latex](https://www.latex-project.org/get/)
 - [Tree](https://pingvinus.ru/note/tree)
-- [PCL (> 1.10)](https://pointclouds.org)
+- [OpenCV (> 4.10)](https://pointclouds.org)
 
 ---
 

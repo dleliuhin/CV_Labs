@@ -4,10 +4,6 @@ Extended service documentation.
 
 ---
 
-![Visualization](./img/visualizer.png)
-
----
-
 Start doxygen code autodoc:<br/>
 
 ```

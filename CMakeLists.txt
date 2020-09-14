@@ -51,7 +51,7 @@ add_executable( ${PROJECT_NAME}
     ${SRC}
     ${EXTERNAL} )
 
-if( OpenCV_FOUND )
+if( GUI AND OpenCV_FOUND  )
     target_include_directories( ${PROJECT_NAME} PRIVATE ${OpenCV_INCLUDE_DIRS} )
 endif()
 

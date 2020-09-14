@@ -84,23 +84,6 @@ public:
 
     //-----------------------------------------------------------------------------------
 
-    /*! \struct Send
-     * \param str     Struct name.
-     * \param target  Inter Process Communications.
-     * \param channel ZCM data to channel.
-     */
-    struct Send
-    {
-        const std::string str { "send" };
-
-        std::string target { "ipc" };
-
-        Channel channel;
-
-    } send;
-
-    //-----------------------------------------------------------------------------------
-
     /*! \struct Logs
      * \param str          Struct name.
      * \param shared_name  Shared log filename.
