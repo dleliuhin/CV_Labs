@@ -60,12 +60,8 @@ int main( int argc, char **argv )
     // GUI in separate thread
 
 #ifdef GUI
-    vthread thread;
-    thread.invoke( [&]
-    {
-        View viewer( nargs.app_name(), config );
-        subscriber.received.link( &viewer, &View::plot );
-    } );
+    View viewer( nargs.app_name(), config );
+    subscriber.received.link( &viewer, &View::plot );
 #endif
 
     //-----------------------------------------------------------------------------------

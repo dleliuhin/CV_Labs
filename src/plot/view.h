@@ -22,6 +22,22 @@
 #include <string>
 
 //=======================================================================================
+
+enum class Color : uint8_t
+{
+    BLACK = 0,
+    WHITE,
+    GREY,
+    RED,
+    ORANGE,
+    YELLOW,
+    GREEN,
+    AQUA,
+    BLUE,
+    PURPLE,
+};
+
+//=======================================================================================
 /*! \class View
  * \brief Data PCL viewer.
  * \details Interconnects with the rest of the application classes to render results.
@@ -63,6 +79,16 @@ private:
 
     //! OpenCV RotateFlags code.
     int8_t _rotate_code { - 1 };
+
+    std::map<Color, uint16_t> _counter;
+
+    //-----------------------------------------------------------------------------------
+
+    void _calc_colors( const cv::Mat& src );
+
+    void _init_counter();
+
+    Color _pixel_type( const uint8_t& h, const uint8_t& s, const uint8_t& v );
 
 };
 //=======================================================================================
