@@ -119,7 +119,7 @@ void View::_calc_colors( const cv::Mat& src )
         vdeb << it->second << " = " << it->first;
 
     vdeb << "-----------------";
-}
+};
 //=======================================================================================
 void View::_init_counter()
 {
