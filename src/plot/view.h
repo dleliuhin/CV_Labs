@@ -64,5 +64,16 @@ private:
     //! OpenCV RotateFlags code.
     int8_t _rotate_code { - 1 };
 
+    //-----------------------------------------------------------------------------------
+
+    void _intensity_hist( const cv::Mat& src,
+                          const std::string& name,
+                          const bool& rgb,
+                          const uint8_t& part,
+                          const cv::Scalar& color );
+
+    void _intensity_channels( const cv::Mat& src );
+
+    void _equalize( const cv::Mat& src );
 };
 //=======================================================================================
