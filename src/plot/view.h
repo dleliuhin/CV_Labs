@@ -64,5 +64,10 @@ private:
     //! OpenCV RotateFlags code.
     int8_t _rotate_code { - 1 };
 
+    //-----------------------------------------------------------------------------------
+
+    void _brightness_filter( const cv::Mat& src );
+    void _border( const cv::Mat& src );
+
 };
 //=======================================================================================
