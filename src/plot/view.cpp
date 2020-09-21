@@ -14,8 +14,6 @@
 //=======================================================================================
 View::View( const std::string& name, const Config& conf )
 {
-    cv::moveWindow( name, 0, 0 );
-
     if ( conf.main.rotate == 0 )
         _rotate_code = - 1;
 
@@ -34,20 +32,37 @@ View::View( const std::string& name, const Config& conf )
 //=======================================================================================
 void View::plot( const Pack& data )
 {
-    if ( data.frame.jpeg.empty() )
+    if ( data.frame1.jpeg.empty() )
         return;
 
     std::vector<char> buf;
-    buf.assign( data.frame.jpeg.data(),
-                data.frame.jpeg.data() + data.frame.jpeg.size() );
+    buf.assign( data.frame1.jpeg.data(),
+                data.frame1.jpeg.data() + data.frame1.jpeg.size() );
 
     auto img = cv::imdecode( buf, cv::IMREAD_COLOR );
 
-    cv::resize( img, img, { 400, 400 } );
+    cv::resize( img, img, { 800, 800 } );
 
     if ( _rotate_code != - 1 )
         cv::rotate( img, img, _rotate_code );
 
+    if ( !data.frame2.jpeg.empty() )
+    {
+        std::vector<char> raw;
+        raw.assign( data.frame2.jpeg.data(),
+                      data.frame2.jpeg.data() + data.frame2.jpeg.size() );
+
+        auto other = cv::imdecode( raw, cv::IMREAD_COLOR );
+
+        cv::resize( other, other, { 200, 200 } );
+
+        if ( _rotate_code != - 1 )
+            cv::rotate( other, other, _rotate_code );
+
+        other.copyTo( img( cv::Rect( 300, 100, other.cols, other.rows ) ) );
+    }
+
+    cv::moveWindow( _name, 0, 0 );
     cv::imshow( _name, img );
 
     auto key = cv::waitKey(10);

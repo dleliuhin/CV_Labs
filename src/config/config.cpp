@@ -27,8 +27,12 @@ Config::Config()
         _schema.subgroup( receive.str );
 
         _schema.add( "target", &receive.target );
-        _schema.add( "prefix", &receive.channel.prefix );
-        _schema.add( "name",   &receive.channel.name );
+
+        _schema.add( "prefix1", &receive.channel1.prefix );
+        _schema.add( "name1",   &receive.channel1.name );
+
+        _schema.add( "prefix2", &receive.channel2.prefix );
+        _schema.add( "name2",   &receive.channel2.name );
 
         _schema.end_subgroup();
     }
@@ -70,7 +74,8 @@ vsettings Config::by_default()
 //=======================================================================================
 void Config::_fill_ch()
 {
-    receive.channel.full = vcat( receive.channel.prefix, receive.channel.name );
+    receive.channel1.full = vcat( receive.channel1.prefix, receive.channel1.name );
+    receive.channel2.full = vcat( receive.channel2.prefix, receive.channel2.name );
 }
 //=======================================================================================
 

@@ -66,14 +66,16 @@ class Pack
 public:
 
     //! Raw data from camera.
-    JFrame frame;
+    JFrame frame1;
+
+    JFrame frame2;
 
     //-----------------------------------------------------------------------------------
 
     /*! \fn void clear();
      * \brief Clear all data entries.
      */
-    void clear();
+    void clear( JFrame* frame );
 
 };
 //=======================================================================================

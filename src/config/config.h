@@ -78,7 +78,8 @@ public:
 
         std::string target { "ipc" };
 
-        Channel channel;
+        Channel channel1;
+        Channel channel2;
 
     } receive;
 
