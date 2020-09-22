@@ -11,11 +11,12 @@
 
 #include "vlog.h"
 
+const int GREEN_MIN = 21;
+const int GREEN_MAX = 110;
+
 //=======================================================================================
 View::View( const std::string& name, const Config& conf )
 {
-    cv::moveWindow( name, 0, 0 );
-
     if ( conf.main.rotate == 0 )
         _rotate_code = - 1;
 
@@ -48,7 +49,10 @@ void View::plot( const Pack& data )
     if ( _rotate_code != - 1 )
         cv::rotate( img, img, _rotate_code );
 
+    cv::moveWindow( _name, 0, 0 );
     cv::imshow( _name, img );
+
+    _segmentation( img );
 
     auto key = cv::waitKey(10);
 
@@ -57,5 +61,21 @@ void View::plot( const Pack& data )
 
     else if ( key == 'p' )
         cv::waitKey();
+}
+//=======================================================================================
+void View::_segmentation( const cv::Mat& src )
+{
+    cv::Mat hsv;
+    cv::cvtColor( src, hsv, cv::COLOR_RGB2HSV );
+
+    std::vector<cv::Mat> splited;
+    cv::split( hsv, splited );
+
+    // H: 0-179, S: 0-255, V: 0-255
+
+    cv::Mat res;
+    cv::pyrMeanShiftFiltering( src, res, 20, 45, 3);
+    cv::moveWindow( "MeanShift", 400, 0 );
+    cv::imshow( "MeanShift", res );
 }
 //=======================================================================================
