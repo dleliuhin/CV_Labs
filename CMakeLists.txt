@@ -31,6 +31,9 @@ endif()
 set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
 set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
+set(CMAKE_INCLUDE_CURRENT_DIR "YES")
+set(CMAKE_AUTOMOC "YES")
+set(CMAKE_AUTOUIC "YES")
 
 #========================================================================================
 
@@ -39,6 +42,8 @@ include( ${CMAKE_CURRENT_SOURCE_DIR}/external/external.cmake )
 #========================================================================================
 
 include_directories( ${CMAKE_SOURCE_DIR} )
+include_directories( ${CMAKE_SOURCE_DIR}/src )
+include_directories( ${CMAKE_SOURCE_DIR}/src/vzcm )
 
 include( ${CMAKE_CURRENT_SOURCE_DIR}/cfg/cfg.cmake )
 include( ${CMAKE_CURRENT_SOURCE_DIR}/src/src.cmake )
@@ -47,6 +52,7 @@ include( ${CMAKE_CURRENT_SOURCE_DIR}/src/src.cmake )
 
 add_executable( ${PROJECT_NAME}
     src/main.cpp
+    src/vzcm/vzcm_subscriber.h
     ${CFG}
     ${SRC}
     ${EXTERNAL} )
@@ -55,9 +61,13 @@ if( GUI AND OpenCV_FOUND  )
     target_include_directories( ${PROJECT_NAME} PRIVATE ${OpenCV_INCLUDE_DIRS} )
 endif()
 
+find_package( Qt5 COMPONENTS Widgets REQUIRED )
+
 target_link_libraries( ${PROJECT_NAME}
     ${V_LIBRARIES}
     ${OpenCV_LIBS}
+    Qt5::Widgets
+    Qt5::Core
     -lstdc++fs
     -ldl )
 

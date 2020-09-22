@@ -14,6 +14,8 @@
 #include "config.h"
 #ifdef GUI
 #include "view.h"
+
+#include <QApplication>
 #endif
 
 #include "niias_arguments.h"
@@ -21,7 +23,7 @@
 #include "vapplication.h"
 #include "vthread.h"
 
-#include "vzcm.h"
+#include <zcm/zcm-cpp.hpp>
 
 #include <iostream>
 
@@ -51,23 +53,38 @@ int main( int argc, char **argv )
 
     //-----------------------------------------------------------------------------------
 
-    // Link signals -> slots
-
-    Subscribe subscriber( config );
+    QApplication qapp( argc, argv );
 
     //-----------------------------------------------------------------------------------
 
-    // GUI in separate thread
+    // Link signals -> slots
+
+    zcm::ZCM zcm( config.receive.target );
+    Subscribe subscriber( &zcm, config, &qapp );
+
+    //-----------------------------------------------------------------------------------
+
+    View viewer( nargs.app_name(), config, &qapp );
+
+    QObject::connect( &subscriber, &Subscribe::received, &viewer, &View::plot );
 
 #ifdef GUI
-    View viewer( nargs.app_name(), config );
-    subscriber.received.link( &viewer, &View::plot );
+
+    Form form;
+
+    //-------------------------------------------------------------------------------
+
+    QObject::connect( &form, &Form::trackbar, &viewer, &View::thresold );
+    QObject::connect( &form, &Form::type, &viewer, &View::type );
+
+    //-------------------------------------------------------------------------------
+
+    form.show();
+
 #endif
 
     //-----------------------------------------------------------------------------------
 
-    vapplication::poll();
-
-    return EXIT_SUCCESS;
+    return qapp.exec();
 }
 //=======================================================================================

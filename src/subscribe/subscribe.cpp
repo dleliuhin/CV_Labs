@@ -12,18 +12,18 @@
 #include "vtime_point.h"
 
 //=======================================================================================
-Subscribe::Subscribe( const Config& conf )
-    : _conf ( conf                )
-    , _zcm  ( conf.receive.target )
+Subscribe::Subscribe( zcm::ZCM* zcm, const Config& conf, QObject* parent )
+    : QObject ( parent               )
+    , _conf   ( conf                 )
 {
     _pack.clear();
 
-    _zcm.subscribe<JFrame>( conf.receive.channel.full,
+    _frame.received.link( conf.receive.channel.full,
                             [ this ]( const JFrame& msg )
     {
         _pack.frame = msg;
 
-        received( _pack );
+        emit received( _pack );
     } );
 }
 //=======================================================================================

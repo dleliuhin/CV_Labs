@@ -19,15 +19,21 @@
 
 #include <opencv2/opencv.hpp>
 
+#include "form.h"
+
 #include <string>
+
+#include <QObject>
 
 //=======================================================================================
 /*! \class View
  * \brief Data PCL viewer.
  * \details Interconnects with the rest of the application classes to render results.
  */
-class View
+class View : public QObject
 {
+    Q_OBJECT
+
 public:
 
     /*!
@@ -35,10 +41,12 @@ public:
      * \param[in] conf Configuration parameters.
      * \details Initialize _plot PCL visualizer basic options.
      */
-    View( const std::string& name = {}, const Config& conf = {} );
+    explicit View( const std::string& name = {},
+                   const Config& conf = {},
+                   QObject* parent = nullptr );
 
     //! Default destructor.
-    ~View() = default;
+    virtual ~View() override = default;
 
     //-----------------------------------------------------------------------------------
 
@@ -48,6 +56,13 @@ public:
     void run();
 
     //-----------------------------------------------------------------------------------
+
+    void thresold( const uint8_t& value );
+    void type( const std::string& data );
+
+    //-----------------------------------------------------------------------------------
+
+public slots:
 
     /*! \fn void plot();
      * \brief Draw some 2D/3D data.
@@ -63,6 +78,14 @@ private:
 
     //! OpenCV RotateFlags code.
     int8_t _rotate_code { - 1 };
+
+    uint8_t _threshold {0};
+
+    cv::ThresholdTypes _type { cv::THRESH_BINARY };
+
+    //-----------------------------------------------------------------------------------
+
+    void _binarize( const cv::Mat& src );
 
 };
 //=======================================================================================
