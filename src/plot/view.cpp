@@ -14,8 +14,6 @@
 //=======================================================================================
 View::View( const std::string& name, const Config& conf )
 {
-    cv::moveWindow( name, 0, 0 );
-
     if ( conf.main.rotate == 0 )
         _rotate_code = - 1;
 
@@ -48,7 +46,26 @@ void View::plot( const Pack& data )
     if ( _rotate_code != - 1 )
         cv::rotate( img, img, _rotate_code );
 
+    cv::moveWindow( _name, 0, 0 );
     cv::imshow( _name, img );
+
+    if ( !_was_init )
+    {
+        _tracker = cv::TrackerKCF::create();
+        _tracker->init( img, _bbox );
+
+        cv::moveWindow( "TrackerKCF", 400, 0 );
+        cv::Mat plot { img };
+        cv::rectangle( plot, _bbox, cv::Scalar( 0, 0, 0 ), 2 );
+        cv::imshow( "TrackerKCF", img );
+
+        _was_init = true;
+    }
+
+    else
+        _tracker->update( img, bbox );
+
+    auto element = _tracker.get();
 
     auto key = cv::waitKey(10);
 

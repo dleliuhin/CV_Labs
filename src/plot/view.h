@@ -18,6 +18,7 @@
 #include "vsignal.h"
 
 #include <opencv2/opencv.hpp>
+#include <opencv2/tracking.hpp>
 
 #include <string>
 
@@ -63,6 +64,12 @@ private:
 
     //! OpenCV RotateFlags code.
     int8_t _rotate_code { - 1 };
+
+    cv::Ptr<cv::Tracker> _tracker;
+
+    bool _was_init { false };
+
+    cv::Rect2d _bbox( 287, 230, 86, 320 );
 
 };
 //=======================================================================================
