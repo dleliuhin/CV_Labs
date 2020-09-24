@@ -65,11 +65,24 @@ private:
     //! OpenCV RotateFlags code.
     int8_t _rotate_code { - 1 };
 
-    cv::Ptr<cv::Tracker> _tracker;
+    cv::Ptr<cv::Tracker> _tracker_kcf;
+    cv::Ptr<cv::Tracker> _tracker_mil;
+    cv::Ptr<cv::Tracker> _tracker_tld;
+    cv::Ptr<cv::Tracker> _tracker_csrt;
+    cv::Ptr<cv::Tracker> _tracker_mosse;
+    cv::Ptr<cv::Tracker> _tracker_goturn;
+    cv::Ptr<cv::Tracker> _tracker_boosting;
+    cv::Ptr<cv::Tracker> _tracker_medianflow;
 
     bool _was_init { false };
 
-    cv::Rect2d _bbox( 287, 230, 86, 320 );
-
+    cv::Rect2d _bbox;
+    cv::Rect2d _bbox_kcf;
+    cv::Rect2d _bbox_mil;
+    cv::Rect2d _bbox_tld;
+    cv::Rect2d _bbox_csrt;
+    cv::Rect2d _bbox_mosse;
+    cv::Rect2d _bbox_boosting;
+    cv::Rect2d _bbox_medianflow;
 };
 //=======================================================================================
