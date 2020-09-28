@@ -11,19 +11,29 @@
 
 #include "vlog.h"
 
-#include <iostream>
 
-const int alpha_slider_max = 100;
-int denoise_slider {0};
-int noise_slider {0};
 
-cv::Mat dst;
+constexpr int thresh_slider_max { 255 };
+int thresh_slider { thresh_slider_max / 2};
+cv::Mat bin;
+
+const int int_slider_min { 0 };
+const int int_slider_max { 100 };
+int intensity_slider {0};
+
+const int con_slider_min { 0 };
+const int con_slider_max { 100 };
+int contrast_slider {33};
+cv::Mat enh;
 
 //=======================================================================================
 void on_trackbar( int, void* )
 {
-    cv::moveWindow( "denoised", 700, 0 );
-    cv::imshow( "denoised", dst );
+    cv::moveWindow( "binary", 600, 0 );
+    cv::imshow( "binary", bin );
+
+    cv::moveWindow( "enhance", 1200, 0 );
+    cv::imshow( "enhance", enh );
 }
 //=======================================================================================
 
@@ -44,15 +54,26 @@ View::View( const std::string& name, const Config& conf )
     else if ( conf.main.rotate == 180 )
         _rotate_code = cv::ROTATE_180;
 
-    cv::namedWindow( "denoised", 1 );
-    cv::createTrackbar( "denoise", "denoised",
-                        &denoise_slider, alpha_slider_max,
+    cv::namedWindow( "binary", 1 );
+    cv::createTrackbar( "Binarization", "binary",
+                        &thresh_slider, thresh_slider_max,
                         on_trackbar );
+    cv::setTrackbarMin( "Binarization", "binary", 0 );
+    cv::setTrackbarMax( "Binarization", "binary", thresh_slider_max );
 
-    cv::namedWindow( "denoised", 2 );
-    cv::createTrackbar( "noise", "denoised",
-                        &noise_slider, alpha_slider_max,
+    cv::namedWindow( "enhance", 1 );
+    cv::createTrackbar( "Intensity", "enhance",
+                        &intensity_slider, thresh_slider_max,
                         on_trackbar );
+    cv::setTrackbarMin( "Intensity", "enhance", int_slider_min );
+    cv::setTrackbarMax( "Intensity", "enhance", int_slider_max );
+
+    cv::namedWindow( "enhance", 2 );
+    cv::createTrackbar( "Contrast", "enhance",
+                        &contrast_slider, thresh_slider_max,
+                        on_trackbar );
+    cv::setTrackbarMin( "Contrast", "enhance", con_slider_min );
+    cv::setTrackbarMax( "Contrast", "enhance", con_slider_max );
 }
 //=======================================================================================
 
@@ -77,21 +98,14 @@ void View::plot( const Pack& data )
     cv::moveWindow( _name, 0, 0 );
     cv::imshow( _name, img );
 
-    auto type = img.type();
+    enh = _enhance( img );
 
-    cv::Mat gauss = cv::Mat( img.size(), CV_16SC3 );
-    cv::randn( gauss, cv::Scalar::all(0), cv::Scalar::all( noise_slider ) );
+    cv::cvtColor( img, img, cv::COLOR_RGB2GRAY );
+    cv::threshold( img, img, 0, thresh_slider, cv::THRESH_OTSU );
 
-    img.convertTo( img, CV_16SC3 );
-    cv::addWeighted( img, 1.0, gauss, 1.0, 0.0, img );
+    bin = img;
 
-    img.convertTo( img, type );
-
-    dst = img;
-
-    cv::fastNlMeansDenoisingColored( dst, dst, denoise_slider );
-
-    on_trackbar( denoise_slider, 0 );
+    on_trackbar( thresh_slider, 0 );
 
     auto key = cv::waitKey(10);
 
@@ -100,5 +114,21 @@ void View::plot( const Pack& data )
 
     else if ( key == 'p' )
         cv::waitKey();
+}
+//=======================================================================================
+cv::Mat View::_enhance( const cv::Mat& src )
+{
+    double alpha = static_cast<double>( contrast_slider * 3.0 ) / 100.0;
+    int beta = intensity_slider;
+
+    cv::Mat res { cv::Mat::zeros( src.size(), src.type() ) };
+
+    for( int y = 0; y < src.rows; y++ )
+        for( int x = 0; x < src.cols; x++ )
+            for( int c = 0; c < src.channels(); c++ )
+                res.at<cv::Vec3b>(y,x)[c] =
+                        static_cast<uchar>( alpha * src.at<cv::Vec3b>(y,x)[c] + beta );
+
+    return res;
 }
 //=======================================================================================
